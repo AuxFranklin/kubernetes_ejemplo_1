@@ -21,7 +21,7 @@ spec:
          environment: test
      spec:
        containers:
-       - image:  us.gcr.io/augmented-form-247902/franklin-nginx
+       - image: us.gcr.io/sopes2-proyect/franklin-nginx
          name: nginx 
          ports:
            - containerPort: 80
