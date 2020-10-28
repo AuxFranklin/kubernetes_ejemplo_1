@@ -1,0 +1,88 @@
+
+/*
+*  Configurando Cluster en Google Cloud
+*/
+
+
+
+export my_zone=us-central1-a
+
+export my_cluster=standard-cluster-1
+
+
+
+
+gcloud container clusters create $my_cluster --num-nodes 3 --zone $my_zone --enable-ip-alias
+
+
+
+gcloud container clusters get-credentials $my_cluster  --zone $my_zone
+
+
+
+/*
+*  Creando Imagen con Dockerfile
+*/
+
+
+
+docker build -t franklin-nginx .
+
+
+
+docker tag franklin-nginx:latest us.gcr.io/augmented-form-247902/franklin-nginx:latest
+
+
+
+docker push us.gcr.io/augmented-form-247902/franklin-nginx:latest
+
+
+
+apply -f nginx-deployment-withrolling.yaml
+
+
+
+kubectl describe pods
+
+
+
+kubectl delete rs testdeploy-68b7d574d8
+
+
+// Creando Load Balancer para ponerlo público en internet
+
+
+kubectl expose deployment testdeploy --type=LoadBalancer --name=my-service
+
+
+/*
+
+Updating Nginx from 18 to 19 ! 
+
+Cambiando archivo .yaml
+
+Realizando Rolling Update
+*/
+
+
+docker build -t franklin-nginx .
+
+
+docker tag franklin-nginx-19:latest us.gcr.io/augmented-form-247902/franklin-nginx-19:latest
+
+
+docker push us.gcr.io/augmented-form-247902/franklin-nginx-19:latest
+
+
+kubectl apply -f nginx-deployment-withrolling.yaml
+
+
+kubectl get rs --watch
+
+kubectl get rs 
+
+
+kubectl describe pods
+
+
+kubectl delete rs testdeploy-68b7d574d8

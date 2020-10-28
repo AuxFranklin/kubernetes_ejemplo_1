@@ -1,0 +1,8 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+  labels:
+    environment: test
+  name: my-service
+spec:
+  type: LoadBalancer
